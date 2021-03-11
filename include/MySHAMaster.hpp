@@ -1,8 +1,8 @@
 // Copyright 2020 Your Name <your_email>
 
 
-#ifndef INCLUDE_HEADER_HPP_
-#define INCLUDE_HEADER_HPP_
+#ifndef INCLUDE_MYSHAMASTER_HPP_
+#define INCLUDE_MYSHAMASTER_HPP_
 
 #include <nlohmann/json.hpp>
 #include <chrono>
@@ -22,16 +22,12 @@ using json = nlohmann::json;
 namespace source = boost::log::sources;
 namespace keys = boost::log::keywords;
 namespace sinks = boost::log::sinks;
-using namespace boost::log::trivial;
+namespace trivial = boost::log::trivial;
 
-static const std::string RIGHT_HEX_END = "0000";
+const std::string RIGHT_HEX_END = "0000";
 
 class MySHAMaster {
  public:
-  MySHAMaster(int argc, char *argv[]);
-  ~MySHAMaster();
-  void Init();
-
   void static StopSignal(int sign){
     is_work = false;
     SaveInJson("Right_Hashes.json");
@@ -49,6 +45,10 @@ class MySHAMaster {
     out_file << j_object.dump(4);
   }
 
+  MySHAMaster(int argc, char *argv[]);
+  ~MySHAMaster();
+  void Init();
+
  private:
   void Hash();
   bool HexCheck(std::string& str_hex);
@@ -59,8 +59,8 @@ class MySHAMaster {
   unsigned int number_of_threads;
   std::mutex mutex;
   std::vector<std::thread> v_threads;
-  source::severity_logger<severity_level> logger;
+  source::severity_logger<trivial::severity_level> logger;
   static std::vector<json> v_true_hashes;
 };
 
-#endif // INCLUDE_HEADER_HPP_
+#endif // INCLUDE_MYSHAMASTER_HPP_

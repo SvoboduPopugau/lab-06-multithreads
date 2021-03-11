@@ -17,11 +17,10 @@ void MySHAMaster::Init() {
   boost::log::add_file_log(
       keys::file_name = "Sample_%N.log",
       keys::rotation_size = 20 * 1024 * 1024,
-      keys::time_based_rotation = sinks::file::rotation_at_time_point(0,0,0),
-      keys::format = "[%Severity%] %TimeStamp%: %Message%"
-      );
+      keys::time_based_rotation = sinks::file::rotation_at_time_point(0, 0, 0),
+      keys::format = "[%Severity%] %TimeStamp%: %Message%");
   is_work = true;
-  for(unsigned int i = 0; i < number_of_threads; i++){
+  for (unsigned int i = 0; i < number_of_threads; i++){
     v_threads.emplace_back(std::thread([&](){
       Hash();
     }));
@@ -54,7 +53,7 @@ bool MySHAMaster::HexCheck(std::string& str_hex) {
 void MySHAMaster::Logging(bool& sever, std::string& str_hex,
                           std::string& str_source) {
   if (sever){
-    BOOST_LOG_SEV(logger, info) << std::endl
+    BOOST_LOG_SEV(logger, trivial::info) << std::endl
                               << "Data: " << str_source
                               << "\tHash: " << str_hex
                               << "\tThread ID: " << std::this_thread::get_id()
@@ -67,7 +66,7 @@ void MySHAMaster::Logging(bool& sever, std::string& str_hex,
     };
     v_true_hashes.push_back(j_object);
   }else{
-    BOOST_LOG_SEV(logger, trace) << std::endl
+    BOOST_LOG_SEV(logger, trivial::trace) << std::endl
                                 << "Data: " << str_source
                                 << "\tHash: " << str_hex
                                 << "\tThread ID: " << std::this_thread::get_id()
@@ -75,7 +74,7 @@ void MySHAMaster::Logging(bool& sever, std::string& str_hex,
   }
 }
 MySHAMaster::~MySHAMaster() {
-    for(auto& iterator:v_threads){
+    for (auto& iterator : v_threads){
       iterator.join();
     }
 }
