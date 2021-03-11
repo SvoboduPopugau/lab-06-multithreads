@@ -10,6 +10,7 @@
 #include <vector>
 #include <thread>
 #include <csignal>
+#include <string>
 #include "../third-party/PicoSHA2/picosha2.h"
 
 #include <boost/log/trivial.hpp>
@@ -37,7 +38,7 @@ class MySHAMaster {
 
   static void SaveInJson(const std::string& filename){
     json j_object;
-    for (auto& iterator:v_true_hashes){
+    for (auto& iterator : v_true_hashes){
       j_object["Required_Hashes"].push_back(iterator);
     }
     std::ofstream out_file;
@@ -48,14 +49,13 @@ class MySHAMaster {
   MySHAMaster(int argc, char *argv[]);
   ~MySHAMaster();
   void Init();
-
  private:
   void Hash();
   bool HexCheck(std::string& str_hex);
   void Logging(bool& severity, std::string& str_hex, std::string& str_source);
- private:
+
   static bool is_work;
-  long int duration;
+  u_int64_t duration;
   unsigned int number_of_threads;
   std::mutex mutex;
   std::vector<std::thread> v_threads;
