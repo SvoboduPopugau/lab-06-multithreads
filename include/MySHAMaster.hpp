@@ -25,11 +25,11 @@ namespace keys = boost::log::keywords;
 namespace sinks = boost::log::sinks;
 namespace trivial = boost::log::trivial;
 
-const std::string RIGHT_HEX_END = "0000";
+const char RIGHT_HEX_END[] = "0000";
 
 class MySHAMaster {
  public:
-  void static StopSignal(int sign){
+  static void StopSignal(int sign){
     is_work = false;
     SaveInJson("Right_Hashes.json");
     std::cout << "Program stopped with code " << --sign << std::endl;
@@ -49,11 +49,11 @@ class MySHAMaster {
   MySHAMaster(int argc, char *argv[]);
   ~MySHAMaster();
   void Init();
- private:
   void Hash();
   bool HexCheck(std::string& str_hex);
   void Logging(bool& severity, std::string& str_hex, std::string& str_source);
 
+ private:
   static bool is_work;
   u_int64_t duration;
   unsigned int number_of_threads;
